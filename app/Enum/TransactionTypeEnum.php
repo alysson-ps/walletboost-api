@@ -7,6 +7,8 @@ namespace App\Enum;
 enum TransactionTypeEnum: string {
     case EXPENSE = 'expense';
     case INCOME = 'income';
+    case TRANSFER = 'transfer';
+    case INVESTMENT = 'investment'; 
 
     public static function values(): array
     {
