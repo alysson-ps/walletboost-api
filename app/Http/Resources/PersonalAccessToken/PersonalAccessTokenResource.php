@@ -13,9 +13,11 @@ class PersonalAccessTokenResource extends BaseResource
     {
         return [
             'id' => $this->id,
-            'name'=> $this->name,
+            'name' => $this->name,
             'abilities' => $this->abilities,
-            'expires_at' => $this->expires_at
+            'last_used_at' => $this->last_used_at,
+            'expires_at' => $this->expires_at,
+            'created_at' => $this->created_at,
         ];
     }
 }

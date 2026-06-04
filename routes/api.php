@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
@@ -8,15 +9,19 @@ use App\Http\Controllers\GoalController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\RecurrenceController;
 use App\Http\Controllers\TransactionController;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
 
+// Verificação de sessão e logout — aceitam Bearer token expirado + cookie remember_me
+Route::get('/me', [AuthController::class, 'me'])->middleware('remember');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('remember');
+
+Route::post('/external/transactions', [TransactionController::class, 'store'])
+    ->middleware(['auth:sanctum', 'ability:api-key']);
+
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::get('/me', [AuthController::class, 'me']);
     Route::get('/token/verify', [AuthController::class, 'tokenVerify']);
 
     Route::group(['prefix' => 'accounts'], function () {
@@ -65,6 +70,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     });
 
     // Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::group(['prefix' => 'api-keys'], function () {
+        Route::get('/', [ApiKeyController::class, 'index']);
+        Route::post('/', [ApiKeyController::class, 'store']);
+        Route::delete('/{id}', [ApiKeyController::class, 'destroy']);
+    });
 
     Route::group(['prefix' => 'dashboard'], function () {
         Route::get('/summary', [DashboardController::class, 'summary']);
