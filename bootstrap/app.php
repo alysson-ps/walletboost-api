@@ -1,5 +1,6 @@
 <?php
 
+use App\Console\Commands\GenerateRecurringTransactions;
 use App\Console\Commands\PruneExpiredRememberTokens;
 use App\Factories\ExceptionHandlerFactory;
 use App\Http\Middleware\CheckRememberToken;
@@ -25,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withSchedule(function (Schedule $schedule): void {
+        $schedule->command(GenerateRecurringTransactions::class)->dailyAt('00:05');
         $schedule->command(PruneExpiredRememberTokens::class)->daily();
     })
     ->withExceptions(function (Exceptions $exceptions): void {

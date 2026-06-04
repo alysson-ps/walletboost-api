@@ -11,6 +11,8 @@ class RecurrenceResource extends BaseResource
     {
         return [
             'id' => $this->id,
+            'account_id' => $this->account_id,
+            'category_id' => $this->category_id,
             'type' => $this->type,
             'amount' => $this->amount,
             'description' => $this->description,
