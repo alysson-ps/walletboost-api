@@ -31,9 +31,7 @@ class TransactionStoreRequest extends FormRequest
             'description' => ['required', 'string', 'max:255'],
             'occurred_at' => ['required', 'date'],
             'status' => ['required', 'in:pending,paid,partial'],
-            'parent_id' => ['nullable', 'exists:transactions,id'],
-            'installments_number' => ['nullable', 'integer', 'min:1'],
-            'installment_total' => ['nullable', 'numeric', 'min:0'],
+            'installment_total' => ['nullable', 'integer', 'min:2'],
         ];
     }
 }
